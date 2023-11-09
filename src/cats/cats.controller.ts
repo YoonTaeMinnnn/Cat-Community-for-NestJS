@@ -1,10 +1,10 @@
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filer';
 import { CatsService } from './cats.service';
 import {
+  Body,
   Controller,
   Delete,
   Get,
-  HttpException,
   Param,
   Patch,
   Post,
@@ -13,6 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { LoggingInterceptor } from 'src/common/interceptors/logging.interceptor';
+import { CatRequestDto } from './dto/cats.request.dto';
 
 @Controller('cats')
 @UseFilters(HttpExceptionFilter)
@@ -22,14 +23,13 @@ export class CatsController {
 
   @Get()
   //@UseFilters(HttpExceptionFilter)
-  getAllCat() {
-    return { cat: 'all cats' };
+  getCurrentCat() {
+    return 'dsa';
   }
 
-  @Get('/:id')
-  getOneCat(@Param('id') id: number) {
-    throw new HttpException('id is not found', 404);
-    return `id = ${id} cat`;
+  @Post()
+  async signUp(@Body() request: CatRequestDto) {
+    return await this.catsService.signUp(request);
   }
 
   @Post()

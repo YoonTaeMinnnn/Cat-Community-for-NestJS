@@ -14,6 +14,8 @@ import {
 } from '@nestjs/common';
 import { LoggingInterceptor } from 'src/common/interceptors/logging.interceptor';
 import { CatRequestDto } from './dto/cats.request.dto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ReadOnlyCatDto } from './dto/cat.dto';
 
 @Controller('cats')
 @UseFilters(HttpExceptionFilter)
@@ -28,13 +30,19 @@ export class CatsController {
   }
 
   @Post()
+  @ApiOperation({ summary: '회원가입' })
+  @ApiResponse({
+    status: 500,
+    description: 'server error',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'success sign up',
+    type: ReadOnlyCatDto,
+  })
+  @Post()
   async signUp(@Body() request: CatRequestDto) {
     return await this.catsService.signUp(request);
-  }
-
-  @Post()
-  createCat() {
-    return 'create cat';
   }
 
   @Put('/:id')

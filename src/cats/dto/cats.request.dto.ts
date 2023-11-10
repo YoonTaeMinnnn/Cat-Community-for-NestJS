@@ -1,15 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { OmitType } from '@nestjs/swagger';
+import { Cat } from '../cats.schema';
 
-export class CatRequestDto {
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-}
+export class CatRequestDto extends OmitType(Cat, ['id', 'imgUrl'] as const) {}

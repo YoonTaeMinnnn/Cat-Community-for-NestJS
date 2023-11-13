@@ -16,12 +16,17 @@ import { LoggingInterceptor } from 'src/common/interceptors/logging.interceptor'
 import { CatRequestDto } from './dto/cats.request.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ReadOnlyCatDto } from './dto/cat.dto';
+import { AuthService } from 'src/auth/auth.service';
+import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
 
 @Controller('cats')
 @UseFilters(HttpExceptionFilter)
 @UseInterceptors(LoggingInterceptor)
 export class CatsController {
-  constructor(private readonly catsService: CatsService) {}
+  constructor(
+    private readonly catsService: CatsService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Get()
   //@UseFilters(HttpExceptionFilter)
@@ -29,7 +34,12 @@ export class CatsController {
     return 'dsa';
   }
 
-  @Post()
+  @Post('signIn')
+  signIn(@Body() request: LoginRequestDto) {
+    return this.authService.jwtLogIn(request);
+  }
+
+  @Post('signUp')
   @ApiOperation({ summary: '회원가입' })
   @ApiResponse({
     status: 500,

@@ -9,15 +9,19 @@ import {
   Patch,
   Post,
   Put,
+  Req,
   UseFilters,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { LoggingInterceptor } from 'src/common/interceptors/logging.interceptor';
 import { CatRequestDto } from './dto/cats.request.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ReadOnlyCatDto } from './dto/cat.dto';
+import { ReadOnlyCatDto } from './dto/cat.response';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
+import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
+import { CurrentUser } from 'src/common/decorators/user.decorator';
 
 @Controller('cats')
 @UseFilters(HttpExceptionFilter)
@@ -29,12 +33,13 @@ export class CatsController {
   ) {}
 
   @Get()
-  //@UseFilters(HttpExceptionFilter)
-  getCurrentCat() {
-    return 'dsa';
+  @UseGuards(JwtAuthGuard)
+  getCurrentCat(@CurrentUser() cat) {
+    return cat;
   }
 
   @Post('signIn')
+  @ApiOperation({ summary: '로그인' })
   signIn(@Body() request: LoginRequestDto) {
     return this.authService.jwtLogIn(request);
   }

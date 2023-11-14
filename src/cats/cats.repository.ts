@@ -11,6 +11,10 @@ export class CatsRepository {
     return await this.catModel.findOne({ email });
   }
 
+  async findByIdWithoutPassword(id: string): Promise<Cat | null> {
+    return await this.catModel.findById(id).select('-password'); //패스워드 필드를 제외하고 조회
+  }
+
   async existsByEmail(email: string) {
     try {
       const result = await this.catModel.exists({ email });

@@ -5,7 +5,7 @@ import { Cat } from './cats.schema';
 import { Model } from 'mongoose';
 import { CatRequestDto } from './dto/cats.request.dto';
 import * as bcrypt from 'bcrypt';
-import { AuthService } from 'src/auth/auth.service';
+import { ReadOnlyCatDto } from './dto/cat.response';
 
 @Injectable()
 export class CatsService {

@@ -9,7 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import * as mongoose from 'mongoose';
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot(), //module 내에서 환경변수 사용하기 위함!
     CatsModule,
     MongooseModule.forRoot(process.env.MONGODB_URI),
     AuthModule,

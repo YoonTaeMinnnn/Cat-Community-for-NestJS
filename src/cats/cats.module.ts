@@ -5,9 +5,14 @@ import { Cat, CatSchema } from './cats.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CatsRepository } from './cats.repository';
 import { AuthModule } from 'src/auth/auth.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
+    MulterModule.register({
+      // upload 폴더에 파일 저장
+      dest: './upload',
+    }),
     MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }]),
     forwardRef(() => AuthModule),
   ],

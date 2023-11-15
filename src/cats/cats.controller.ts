@@ -10,6 +10,7 @@ import {
   Post,
   Put,
   Req,
+  UploadedFiles,
   UseFilters,
   UseGuards,
   UseInterceptors,
@@ -22,6 +23,8 @@ import { AuthService } from 'src/auth/auth.service';
 import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from 'src/common/utils/multer.options';
 
 @Controller('cats')
 @UseFilters(HttpExceptionFilter)
@@ -60,18 +63,14 @@ export class CatsController {
     return await this.catsService.signUp(request);
   }
 
-  @Put('/:id')
-  updateCat(@Param('id') id: number) {
-    return 'update cat';
-  }
-
-  @Patch(':id')
-  updatePartialCat(@Param('id') id: number) {
-    return 'update partial cat';
-  }
-
-  @Delete(':id')
-  deleteCat(@Param('id') id: number) {
-    return 'delete cat';
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('files', multerOptions('cats')))
+  uploadCatImg(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Body() request: LoginRequestDto,
+  ) {
+    console.log(`${request.email} ---- ${request.password}`);
+    console.log(files);
+    return 'cat image';
   }
 }

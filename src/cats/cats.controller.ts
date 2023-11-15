@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filer';
 import { CatsService } from './cats.service';
 import {
@@ -25,6 +26,7 @@ import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/common/utils/multer.options';
+import { Cat } from './cats.schema';
 
 @Controller('cats')
 @UseFilters(HttpExceptionFilter)
@@ -39,6 +41,11 @@ export class CatsController {
   @UseGuards(JwtAuthGuard)
   getCurrentCat(@CurrentUser() cat) {
     return cat;
+  }
+
+  @Get('all')
+  async getCatsAll() {
+    return await this.catsService.getCatsAll();
   }
 
   @Post('signIn')
@@ -64,10 +71,11 @@ export class CatsController {
   }
 
   @Post('upload')
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('files', multerOptions('cats')))
   uploadCatImg(
     @UploadedFiles() files: Array<Express.Multer.File>,
-    @Body() request: LoginRequestDto,
+    @Body() request: LoginRequestDto, //form-data도 @Body()로 가능
   ) {
     console.log(`${request.email} ---- ${request.password}`);
     console.log(files);

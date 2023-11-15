@@ -7,6 +7,10 @@ import { Model } from 'mongoose';
 export class CatsRepository {
   constructor(@InjectModel(Cat.name) private readonly catModel: Model<Cat>) {}
 
+  async findAll() {
+    return await this.catModel.find();
+  }
+
   async findByEmail(email: string): Promise<Cat | null> {
     return await this.catModel.findOne({ email });
   }

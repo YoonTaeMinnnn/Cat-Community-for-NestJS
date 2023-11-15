@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { CatsRepository } from './cats.repository';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -28,5 +29,10 @@ export class CatsService {
       hashedPassword,
     );
     return savedCat.readOnlyData;
+  }
+
+  async getCatsAll() {
+    const cats = await this.catsRepository.findAll();
+    return cats.map((cat) => cat.readOnlyData);
   }
 }

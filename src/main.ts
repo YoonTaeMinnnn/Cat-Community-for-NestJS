@@ -25,7 +25,7 @@ async function bootstrap() {
     .addTag('cats')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document); // end-point
+  SwaggerModule.setup('docs', app, document); // end-poin
 
   // swagger 보안 설정
   app.use(

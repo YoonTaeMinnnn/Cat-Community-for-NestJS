@@ -1,12 +1,11 @@
 import { map } from 'rxjs/operators';
-import { CatsRepository } from './cats.repository';
+import { CatsRepository } from '../repository/cats.repository';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Cat } from './cats.schema';
+import { Cat } from '../cats.schema';
 import { Model } from 'mongoose';
-import { CatRequestDto } from './dto/cats.request.dto';
+import { CatRequestDto } from '../dto/cats.request.dto';
 import * as bcrypt from 'bcrypt';
-import { ReadOnlyCatDto } from './dto/cat.response';
 
 @Injectable()
 export class CatsService {

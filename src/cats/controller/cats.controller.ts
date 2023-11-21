@@ -1,6 +1,6 @@
 import { map } from 'rxjs/operators';
 import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filer';
-import { CatsService } from './cats.service';
+import { CatsService } from '../service/cats.service';
 import {
   Body,
   Controller,
@@ -17,16 +17,16 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { LoggingInterceptor } from 'src/common/interceptors/logging.interceptor';
-import { CatRequestDto } from './dto/cats.request.dto';
+import { CatRequestDto } from '../dto/cats.request.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ReadOnlyCatDto } from './dto/cat.response';
+import { ReadOnlyCatDto } from '../dto/cat.response';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
 import { JwtAuthGuard } from 'src/auth/jwt/jwt.guard';
 import { CurrentUser } from 'src/common/decorators/user.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/common/utils/multer.options';
-import { Cat } from './cats.schema';
+import { Cat } from '../cats.schema';
 
 @Controller('cats')
 @UseFilters(HttpExceptionFilter)

@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CommentsCreateDto } from '../dto/comment.dto';
 import { CommentsRepository } from '../repository/comments.repository';
 import { CatsRepository } from 'src/cats/repository/cats.repository';
-import { Types } from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 
 @Injectable()
 export class CommentsService {
@@ -24,8 +24,8 @@ export class CommentsService {
       throw new NotFoundException('해당 고양이가 존재하지 않습니다.');
     }
     return await this.commentsRepository.createComment(
-      validTargetCat.id,
-      authorId,
+      new mongoose.Types.ObjectId(validTargetCat.id),
+      new mongoose.Types.ObjectId(authorId),
       content,
     );
   }
